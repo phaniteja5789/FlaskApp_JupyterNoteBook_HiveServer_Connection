@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+   <style>
+      table,th,tr,td {
+        border:1px solid black;
+        border-collapse:collapse;
+      }
+      textarea{
+         border-collapse: collapse;
+         border: 1px solid gray;
+         width: 98%;
+         max-width: 100%;
+         resize: both;
+      }
+      .buttons
+      {
+      	text-align: center;
+        margin: 60px 0px 5px 0px;
+      }
+      .scrollbar
+      {
+        overflow : auto;
+      }
+      </style>
+<body onload="displayFlashMessages()">
+   <table style="width:100%">
+   <tr>
+      <th width="50%">Query</th>
+      <th>Result</th>
+   </tr>
+   <tr>
+      <td>
+         <form method="post" action="/executeQuery">
+            <textarea rows="50" cols="100" name="query">{{query}}</textarea>
+            <div class="buttons">
+               <input type="submit"  value="Execute" >
+               <button formaction="/clear" type="Submit" formmethod="post">Clear</button>
+            </div>   
+         </form>
+      </td>
+      <td>
+         <div class="scrollbar">
+            {% for dt_table in tables %}
+               <b> {{ queries[loop.index0] }} </b>
+               {{ dt_table|safe }}
+               <hr>
+            {% endfor %}
+         </div>
+      </td>
+   </tr>
+   <script type="text/javascript">
+      function displayFlashMessages() {
+          var msgs= {{ flash_messages|safe }};
+          if(Array.from(msgs).length>0)
+          {
+            Array.from(msgs).forEach(element => {
+               alert(element);
+             });
+          }
+          
+      }
+  </script>
+</body>
+</html>
+
